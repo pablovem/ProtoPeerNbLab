@@ -33,9 +33,25 @@ public class CommandFlooderExperiment extends SimulatedExperiment {
         
         experiment.initPeers(0,300,peerFactory);
         // This line has changed
-        experiment.startPeers(0,1);  
+        experiment.startPeers(0,300);  
         
+        // Run the Simulation
         experiment.runSimulation(Time.inSeconds(20));
+        // dump the measurements
+        MeasurementLog mlog = experiment.getRootMeasurementLog();
+        
+        // Log header
+        System.out.print("EpochDur");
+        System.out.print("\t");
+        System.out.print("Each epoch started and 'ttl0_command' measurement");
+        System.out.print("\n");
+        
+        for (int epochNumber=0; epochNumber<=20; epochNumber++){
+            System.out.print(epochNumber*MainConfiguration.getSingleton().measurementEpochDuration/1000);
+            System.out.print("\t\t");
+            System.out.print(mlog.getAggregateByEpochNumber(epochNumber, "ttl0_command").getSum());
+            System.out.print("\n");
+        }
     }
 
 }

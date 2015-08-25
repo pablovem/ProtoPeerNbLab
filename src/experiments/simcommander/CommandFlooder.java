@@ -49,6 +49,8 @@ public class CommandFlooder extends BasePeerlet {
                 for (Finger neighbor : getNeighborManager().getNeighbors()) {
                     getPeer().sendMessage(neighbor.getNetworkAddress(), commandMessage);
                 }
+            } else {
+                getPeer().getMeasurementLogger().log("ttl0_command", 1);
             }
         }
     }
