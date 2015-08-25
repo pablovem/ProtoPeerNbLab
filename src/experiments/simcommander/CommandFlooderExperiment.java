@@ -31,9 +31,9 @@ public class CommandFlooderExperiment extends SimulatedExperiment {
             }
         };
         
-        experiment.initPeers(0,300,peerFactory);
+        experiment.initPeers(0,10,peerFactory);
         // This line has changed
-        experiment.startPeers(0,300);  
+        experiment.startPeers(0,10);  
         
         // Run the Simulation
         experiment.runSimulation(Time.inSeconds(20));

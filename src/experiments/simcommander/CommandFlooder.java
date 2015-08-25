@@ -49,10 +49,15 @@ public class CommandFlooder extends BasePeerlet {
     @Override
     public void handleIncomingMessage(Message message) {
         if (message instanceof CommandMessage) {
+            
+            System.out.println("peer " + getPeer().getNetworkAddress() + " received " + message);
+            
             CommandMessage commandMessage = (CommandMessage) message;
             if (--commandMessage.ttl > 0) {
                 for (Finger neighbor : getNeighborManager().getNeighbors()) {
                     getPeer().sendMessage(neighbor.getNetworkAddress(), commandMessage);
+                    
+                    System.out.println("peer " + getPeer().getNetworkAddress() + " sent " + message + " to " + neighbor.getNetworkAddress());
                 }
             } else {
                 getPeer().getMeasurementLogger().log("ttl0_command", 1);
