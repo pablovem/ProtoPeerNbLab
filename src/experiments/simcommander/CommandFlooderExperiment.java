@@ -41,7 +41,7 @@ public class CommandFlooderExperiment extends SimulatedExperiment {
         MeasurementLog mlog = experiment.getRootMeasurementLog();
         
         // Log header
-        System.out.print("EpochDur");
+        System.out.print("\nEpochDur");
         System.out.print("\t");
         System.out.print("Each epoch started and 'ttl0_command' measurement");
         System.out.print("\n");

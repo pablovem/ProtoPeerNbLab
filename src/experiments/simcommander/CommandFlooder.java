@@ -29,7 +29,12 @@ public class CommandFlooder extends BasePeerlet {
                     commandMessage.command = "fire at will";
                     commandMessage.ttl = 4;
                     
+                    System.out.println("Captain gives the first command to " + getNeighborManager().getNumNeighbors() + " neighbors.");
+                    
                     for (Finger neighbor : getNeighborManager().getNeighbors()) {
+                        
+                        System.out.println("peer " + getPeer().getNetworkAddress() + " sent " + commandMessage + " to NetworkAddress: " + neighbor.getNetworkAddress());
+                        
                         getPeer().sendMessage(neighbor.getNetworkAddress(), commandMessage);
                         getPeer().getMeasurementLogger().log("command_sent", 1);
                     }
