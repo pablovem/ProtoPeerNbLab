@@ -33,7 +33,7 @@ public class CommandFlooder extends BasePeerlet {
                     
                     for (Finger neighbor : getNeighborManager().getNeighbors()) {
                         
-                        System.out.println("peer " + getPeer().getNetworkAddress() + " sent " + commandMessage + " to NetworkAddress: " + neighbor.getNetworkAddress());
+                        System.out.println("peer " + getPeer().getNetworkAddress() + " (State= " + getPeer().getState() + ") " + " sent " + commandMessage + " to NetworkAddress: " + neighbor.getNetworkAddress());
                         
                         getPeer().sendMessage(neighbor.getNetworkAddress(), commandMessage);
                         getPeer().getMeasurementLogger().log("command_sent", 1);
@@ -50,14 +50,14 @@ public class CommandFlooder extends BasePeerlet {
     public void handleIncomingMessage(Message message) {
         if (message instanceof CommandMessage) {
             
-            System.out.println("peer " + getPeer().getNetworkAddress() + " received " + message);
+            System.out.println("peer " + getPeer().getNetworkAddress() + " (Peer State= " + getPeer().getState() + ", Peer Clock= " + getPeer().getClock().getCurrentTime() + ") " + " RECEIVED " + message);
             
             CommandMessage commandMessage = (CommandMessage) message;
             if (--commandMessage.ttl > 0) {
                 for (Finger neighbor : getNeighborManager().getNeighbors()) {
                     getPeer().sendMessage(neighbor.getNetworkAddress(), commandMessage);
                     
-                    System.out.println("peer " + getPeer().getNetworkAddress() + " sent " + message + " to " + neighbor.getNetworkAddress());
+                    System.out.println("peer " + getPeer().getNetworkAddress() + " (Peer State= " + getPeer().getState() + ", Peer Clock= " + getPeer().getClock().getCurrentTime() + ")" + " SENT " + message + " to " + neighbor.getNetworkAddress());
                 }
             } else {
                 getPeer().getMeasurementLogger().log("ttl0_command", 1);

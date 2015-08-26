@@ -9,15 +9,22 @@ import protopeer.util.quantities.*;
 
 import protopeer.PeerFactory;
 
+// SimulatedExperiment uses SimulatedClock and one of the available simulated network models
+// LiveExperiment uses the RealClock and a networking implementation using TCP and UDP
 public class CommandFlooderExperiment extends SimulatedExperiment {
 
     public static void main(String[] args) {
+        // ProtoPeer environment initialization
         Experiment.initEnvironment();
+        
+        // Experiment instance (single instance of Experiment per JVM)
         CommandFlooderExperiment experiment = new CommandFlooderExperiment();
+        
+        // Experiment instance initialization
         experiment.init();
         
         PeerFactory peerFactory = new PeerFactory() {
-            // This line has been changes as well
+            // (Peer, peerlets) creation, peers config 
             public Peer createPeer(int peerIndex, Experiment experiment) {
                 Peer newPeer = new Peer(peerIndex);
                 if (peerIndex == 0) {
@@ -31,8 +38,9 @@ public class CommandFlooderExperiment extends SimulatedExperiment {
             }
         };
         
+        // initPeer(int startIndex, int numPeers, PeerFactory perrFactory)
         experiment.initPeers(0,10,peerFactory);
-        // This line has changed
+        
         experiment.startPeers(0,10);  
         
         // Run the Simulation
@@ -56,7 +64,7 @@ public class CommandFlooderExperiment extends SimulatedExperiment {
     
     @Override
     public NetworkInterfaceFactory createNetworkInterfaceFactory() {
-        // Lossless network model: all messages have a uniformely randomly delay chosen [500,2000} ms 
+        // Lossless network model: all messages have a uniformely randomly delay chosen [500,2000] ms 
         return new DelayLossNetworkInterfaceFactory(getEventScheduler(),new UniformDelayModel(500,2000));
     }
 
