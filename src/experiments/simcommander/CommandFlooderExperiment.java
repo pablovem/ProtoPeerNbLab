@@ -53,5 +53,11 @@ public class CommandFlooderExperiment extends SimulatedExperiment {
             System.out.print("\n");
         }
     }
+    
+    @Override
+    public NetworkInterfaceFactory createNetworkInterfaceFactory() {
+        // Lossless network model: all messages have a uniformely randomly delay chosen [500,2000} ms 
+        return new DelayLossNetworkInterfaceFactory(getEventScheduler(),new UniformDelayModel(500,2000));
+    }
 
 }
