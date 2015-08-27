@@ -6,7 +6,7 @@ import protopeer.time.*;
 
 public class CommandFlooder extends BasePeerlet {
     
-    private boolean captain;
+    private final boolean captain;
 
     private Timer initialDelayTimer;
 
@@ -24,12 +24,13 @@ public class CommandFlooder extends BasePeerlet {
         if (captain) {
             initialDelayTimer = getPeer().getClock().createNewTimer();
             initialDelayTimer.addTimerListener(new TimerListener() {
+                @Override
                 public void timerExpired(Timer timer) {
                     CommandMessage commandMessage = new CommandMessage();
                     commandMessage.command = "fire at will";
                     commandMessage.ttl = 4;
                     
-                    System.out.println("Captain gives the first command to " + getNeighborManager().getNumNeighbors() + " neighbors.");
+                    System.out.println("\nCaptain gives the first command to " + getNeighborManager().getNumNeighbors() + " neighbors.");
                     
                     for (Finger neighbor : getNeighborManager().getNeighbors()) {
                         
@@ -43,11 +44,14 @@ public class CommandFlooder extends BasePeerlet {
             });
             initialDelayTimer.schedule(5e3);
         }
+        
+        System.out.println("Peer " + peer.getIndexNumber() + " (Peer State= " + getPeer().getState() + ", Peer Clock= " + getPeer().getClock().getCurrentTime() + ") ");
     }
     
     
     @Override
     public void handleIncomingMessage(Message message) {
+              
         if (message instanceof CommandMessage) {
             
             System.out.println("peer " + getPeer().getNetworkAddress() + " (Peer State= " + getPeer().getState() + ", Peer Clock= " + getPeer().getClock().getCurrentTime() + ") " + " RECEIVED " + message);
@@ -62,6 +66,9 @@ public class CommandFlooder extends BasePeerlet {
             } else {
                 getPeer().getMeasurementLogger().log("ttl0_command", 1);
             }
+        
+        getPeer().getMeasurementLogger().log("message_count", 1);
+        System.out.println("message_count= " + getPeer().getMeasurementLogger().getMeasurementLog().getAggregate("message_count"));
         }
     }
 

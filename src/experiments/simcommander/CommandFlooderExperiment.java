@@ -27,13 +27,18 @@ public class CommandFlooderExperiment extends SimulatedExperiment {
             // (Peer, peerlets) creation, peers config 
             public Peer createPeer(int peerIndex, Experiment experiment) {
                 Peer newPeer = new Peer(peerIndex);
+                
                 if (peerIndex == 0) {
                     newPeer.addPeerlet(new BootstrapServer());
                 }
+                
                 newPeer.addPeerlet(new NeighborManager());
                 newPeer.addPeerlet(new SimpleConnector());
                 newPeer.addPeerlet(new BootstrapClient(Experiment.getSingleton().getAddressToBindTo(0), new SimplePeerIdentifierGenerator()));
                 newPeer.addPeerlet(new CommandFlooder(peerIndex == 0));
+                
+                System.out.println("Peer " + peerIndex + " created.");
+                
                 return newPeer;
             }
         };
@@ -48,17 +53,31 @@ public class CommandFlooderExperiment extends SimulatedExperiment {
         // dump the measurements
         MeasurementLog mlog = experiment.getRootMeasurementLog();
         
-        // Log header
+        // Log header``
         System.out.print("\nEpochDur");
         System.out.print("\t");
-        System.out.print("Each epoch started and 'ttl0_command' measurement");
+        // Each epoch started and 'ttl0_command' measurement
+        System.out.print("'ttl0_command'");
+        System.out.print("\t");
+        System.out.print("'message_count'");
+        System.out.print("\t");
+        System.out.print("Min Epoch");
+        System.out.print("\t");
+        System.out.print("Max Epoch");
+        
         System.out.print("\n");
         
         for (int epochNumber=0; epochNumber<=20; epochNumber++){
             System.out.print(epochNumber*MainConfiguration.getSingleton().measurementEpochDuration/1000);
             System.out.print("\t\t");
             System.out.print(mlog.getAggregateByEpochNumber(epochNumber, "ttl0_command").getSum());
-            System.out.print("\n");
+            System.out.print("\t\t");
+            System.out.print(mlog.getAggregateByEpochNumber(epochNumber, "message_count").getSum());
+            System.out.print("\t\t");
+            System.out.print(mlog.getMinEpochNumber());
+            System.out.print("\t\t");
+            System.out.print(mlog.getMaxEpochNumber());
+            System.out.print("\n");  
         }
     }
     
