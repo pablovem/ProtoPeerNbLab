@@ -43,10 +43,12 @@ public class CommandFlooderExperiment extends SimulatedExperiment {
             }
         };
         
+        int numPeersInSim = MainConfiguration.getSingleton().numPeersInSim;
+        System.out.println("Num Peers in Simulation: " + numPeersInSim);
         // initPeer(int startIndex, int numPeers, PeerFactory perrFactory)
-        experiment.initPeers(0,10,peerFactory);
-        
-        experiment.startPeers(0,10);  
+        experiment.initPeers(0,numPeersInSim,peerFactory);
+        // Start Peers
+        experiment.startPeers(0,numPeersInSim);  
         
         // Run the Simulation
         experiment.runSimulation(Time.inSeconds(20));

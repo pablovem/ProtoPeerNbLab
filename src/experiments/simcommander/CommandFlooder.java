@@ -33,7 +33,6 @@ public class CommandFlooder extends BasePeerlet {
                     System.out.println("\nCaptain gives the first command to " + getNeighborManager().getNumNeighbors() + " neighbors.");
                     
                     for (Finger neighbor : getNeighborManager().getNeighbors()) {
-                        
                         System.out.println("peer " + getPeer().getNetworkAddress() + " (State= " + getPeer().getState() + ") " + " sent " + commandMessage + " to NetworkAddress: " + neighbor.getNetworkAddress());
                         
                         getPeer().sendMessage(neighbor.getNetworkAddress(), commandMessage);
@@ -54,7 +53,7 @@ public class CommandFlooder extends BasePeerlet {
               
         if (message instanceof CommandMessage) {
             
-            System.out.println("peer " + getPeer().getNetworkAddress() + " (Peer State= " + getPeer().getState() + ", Peer Clock= " + getPeer().getClock().getCurrentTime() + ") " + " RECEIVED " + message);
+            System.out.println("peer " + getPeer().getNetworkAddress() + " (Peer State= " + getPeer().getState() + ", Peer Clock= " + getPeer().getClock().getCurrentTime() + ") " + "RECEIVED " + message);
             
             CommandMessage commandMessage = (CommandMessage) message;
             if (--commandMessage.ttl > 0) {
